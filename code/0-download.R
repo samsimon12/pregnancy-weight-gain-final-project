@@ -1,12 +1,13 @@
 # load libraries
 library(tidyverse)
 
-# download case data from NY Times website
-url = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
-case_data_raw = read_csv(url)
+pdiet = read_csv("data/raw/pregnancy_diet.csv")
 
 # write raw data to file
 write_tsv(x = case_data_raw, file = "data/raw/case_data_raw.tsv")
 
 # download health rankings data from the web 
 # (omitted from this template)
+url = ("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6799919/bin/pone.0224034.s001.csv")
+read_csv(url)
+         
