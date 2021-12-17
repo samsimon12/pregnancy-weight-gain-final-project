@@ -42,6 +42,14 @@ raincloudRacePlot <- ggplot(x, aes(x = mother_race_ethnicity, y = pregnancy_weig
   geom_point(aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, color = mother_race_ethnicity),position = position_jitter(width = .15, height = 0), size = 1, shape = 20)+
   geom_boxplot(aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, fill = mother_race_ethnicity),outlier.shape = NA, alpha = .5, width = .1, colour = "black")+
   scale_colour_brewer(palette = "Set1")+
-  scale_fill_brewer(palette = "Set1")+ theme_classic()
-raincloudRacePlot
+  scale_fill_brewer(palette = "Set1")+ theme_classic() + labs(x = "race/ethnicity", y = "weight gain") + 
+  guides(x = guide_axis(n.dodge = 2))
+raincloudRacePlot = raincloudRacePlot + labs(fill="race/ethnicity")
+
+# save
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/raincloud-race.png", 
+       plot = raincloudRacePlot, 
+       device = "png", 
+       width = 7, 
+       height = 4)
 ```
