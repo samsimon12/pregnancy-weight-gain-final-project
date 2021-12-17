@@ -1,0 +1,47 @@
+---
+title: "2-exploration"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message = FALSE}
+# load packages
+library(tidyverse)  # tidyverse
+library(ggrepel)    # for scatter plot point labels
+library(kableExtra) # for printing tables
+library(cowplot)    # for side by side plots
+# raincloud plots
+if (!require(remotes)) {
+  install.packages("remotes")
+}
+remotes::install_github('jorvlan/raincloudplots')
+
+library(raincloudplots)
+library(dplyr)
+library(readr)
+source("/Users/samsimon/Box/2019-02-neuroDepartments/New\ Folder\ With\ Items/results/scripts/R_rainclouds.R")
+```
+
+```{r}
+# load cleaned data
+pdiet_data = read.csv("~/pregnancy-weight-gain-final-project/data/clean/pregnancy_data.csv")
+x = pdiet_data %>% na.omit()
+```
+
+```{r}
+# histogram of weight gain
+```
+
+```{r}
+# raincloud of weight gain vs race
+raincloudRacePlot <- ggplot(x, aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, fill = mother_race_ethnicity)) +
+  geom_flat_violin(aes(fill = mother_race_ethnicity),position = position_nudge(x = .2, y = 0), adjust = 1.5, trim = FALSE, alpha = .5, colour = NA)+
+  geom_point(aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, color = mother_race_ethnicity),position = position_jitter(width = .15, height = 0), size = 1, shape = 20)+
+  geom_boxplot(aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, fill = mother_race_ethnicity),outlier.shape = NA, alpha = .5, width = .1, colour = "black")+
+  scale_colour_brewer(palette = "Set1")+
+  scale_fill_brewer(palette = "Set1")+ theme_classic()
+raincloudRacePlot
+```

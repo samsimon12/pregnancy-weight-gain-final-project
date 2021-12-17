@@ -18,7 +18,7 @@ library(cowplot)    # for side by side plots
 
 ## Data Wrangling
 ```{r}
-pdiet_raw = read.csv("~/gun-violence-final-project/data/raw/pregnancy_diet.csv")
+pdiet_raw = read.csv("~/pregnancy-weight-gain-final-project/data/raw/pregnancy_diet.csv")
 ```
 
 ```{r}
@@ -254,7 +254,7 @@ pdiet5 = pdiet4 %>% rename(pregnancy_weight_gain = N9..Weight.gain.during.pregna
 ```{r}
 # write cleaned dataset to file
 write_csv(pdiet5, file = 
-            "~/gun-violence-final-project/data/clean/pregnancy_data.csv")
+        "~/pregnancy-weight-gain-final-project/data/clean/pregnancy_data.csv")
 ```
 
 
