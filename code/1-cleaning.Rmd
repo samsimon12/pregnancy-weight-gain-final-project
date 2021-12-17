@@ -234,7 +234,7 @@ pdiet4 = pdiet3 %>% mutate(hamburger_amount=str_sub(DHP72a..Beef.hamburgers.chee
 ```
 
 ```{r}
-
+# remove nas and negative weight gains
 pdiet5 = pdiet4 %>% rename(pregnancy_weight_gain = N9..Weight.gain.during.pregnancy.in.pounds) %>%
   filter(!pregnancy_weight_gain == ".Q: No Q’naire data") %>% filter(
     !pregnancy_weight_gain == ".N: No Answer") %>% relocate(pregnancy_weight_gain) %>% 
@@ -246,7 +246,8 @@ pdiet5 = pdiet4 %>% rename(pregnancy_weight_gain = N9..Weight.gain.during.pregna
          lean_meat_oz = DHPbfpklb..Oz.lean.meat.from.beef.pork.lamb.etc, 
          weeks_before_delivery_DHP_complete = DHPWksbirth..Weeks.until.the.birth.when.DHP.was.completed,
          avg_cigarettes_daily = P10..Current.average.daily.cigarettes.smoked, 
-         other_babies = P41_1..Other.babies.respondent.had)
+         other_babies = P41_1..Other.babies.respondent.had) %>% select(-DHQgroup..Sample.group) %>% na.omit %>%
+  filter(pregnancy_weight_gain>=0)
 
 
 ```

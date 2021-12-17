@@ -22,17 +22,31 @@ remotes::install_github('jorvlan/raincloudplots')
 library(raincloudplots)
 library(dplyr)
 library(readr)
-source("/Users/samsimon/Box/2019-02-neuroDepartments/New\ Folder\ With\ Items/results/scripts/R_rainclouds.R")
+source("~/pregnancy-weight-gain-final-project/code/scripts/R_rainclouds.R")
 ```
 
 ```{r}
 # load cleaned data
-pdiet_data = read.csv("~/pregnancy-weight-gain-final-project/data/clean/pregnancy_data.csv")
-x = pdiet_data %>% na.omit()
+pdiet_data = read.csv("~/pregnancy-weight-gain-final-project/data/clean/pregnancy_data.csv") %>% na.omit()
 ```
 
 ```{r}
-# histogram of weight gain
+# calculate median weight gain
+median_weight_gain = pdiet_data %>%
+  summarise(median(pregnancy_weight_gain)) %>%
+  pull()
+
+# create histogram of weight gain during pregnancy
+p = pdiet_data %>%
+  ggplot(aes(x = pregnancy_weight_gain)) + 
+  geom_histogram() +
+  geom_vline(xintercept = median_weight_gain,
+             linetype = "dashed") +
+  labs(x = "Weight gain during pregnancy", 
+       y = "Number of women") +
+  theme_classic()
+p
+
 ```
 
 ```{r}
