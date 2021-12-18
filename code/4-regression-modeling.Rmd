@@ -16,27 +16,31 @@ source("functions/plot_glmnet.R")   #for ridge trace plot
 ```
 
 ```{r}
-# load in training and test data
-pdiet_test = read.csv("./../data/clean/pdiet_test.csv")
-pdiet_train1 = read_csv("./../data/clean/pdiet_train.csv", show_col_types = FALSE)
-pdiet_train = data.frame(pdiet_train1)
-pdiet_train[sapply(pdiet_train, is.character)] <- lapply(pdiet_train[sapply(pdiet_train, is.character)], 
-                                                         as.factor)
+# load in training data
+pdiet_train = read_csv("./../data/clean/pdiet_train.csv", show_col_types = FALSE)
 ```
 
-```{r}
+```{r, warning=FALSE}
 # run linear regression on DHP variables (numeric)
-
-lm_fit = lm(formula = pregnancy_weight_gain ~ DHPalcoholg + DHPbeanpea + DHPbfpklb + DHPcalcium + DHPfat205 +
-              DHPfat226 + DHPfenergy + DHPfolate + DHPfolequ + DHPfrklch + DHPfruit + DHPiron + DHPmtpltfs +
-              DHPnatfol + DHPnutsds + DHPorgan + DHPpepfat + DHPpfat + DHPpoultry + DHPsodium + DHPsoy +
-              DHPsunfol + DHPtfatacid + DHPupfol + DHPveg + DHPvitd + DHPwgrain + DHPwhpot,
-            data = pdiet_train)
+lm_fit = lm(formula = pregnancy_weight_gain ~ ., data = pdiet_train)
 
 # print summary
 summary(lm_fit)
+res = resid(lm_fit) %>% as.numeric()
+typeof(res)
 
-#save linear regression fit 
+# residual histogram
+res_hist = ggplot(data = pdiet_train, aes(x = lm_fit$residuals)) +
+    geom_histogram() + theme_bw() + labs(x= "residuals")
+
+# save plot
+ggsave(filename = "./../results/residuals-hist.png", 
+       plot = res_hist, 
+       device = "png", 
+       width = 6, 
+       height = 4)
+
+# save linear regression fit
 save(lm_fit, file = "./../results/lm_fit.Rda")
 ```
 
