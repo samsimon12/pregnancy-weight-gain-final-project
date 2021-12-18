@@ -1,0 +1,87 @@
+---
+title: "5-tree-modeling"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message = FALSE}
+# load packages
+library(rpart)         # to train decision trees
+library(rpart.plot)    # to plot decision trees
+library(randomForest)  # random forests
+library(gbm)           # boosting
+library(tidyverse)     # tidyverse
+library(kableExtra)
+```
+
+```{r}
+# load in training data
+pregnancy_train = read.csv("~/pregnancy-weight-gain-final-project/data/clean/pdiet_train.csv")
+```
+
+```{r}
+# run random forest with default parameters
+set.seed(5) # for reproducibility (DO NOT CHANGE)
+rf_fit = randomForest(pregnancy_weight_gain ~ ., data = pregnancy_train)
+error_B = plot(rf_fit)
+
+
+png(file='~/pregnancy-weight-gain-final-project/results/error-versus-B.png')
+plot(rf_fit)
+dev.off() 
+
+# save
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-B.png", 
+       plot = error_B, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+# OOB error stabilizes at approx 100 trees based on plot
+# default mtry value: p/3, or 153/3, which is 51
+
+# tune for optimal value of m
+mvalues = seq(1,153)
+oob_errors = numeric(length(mvalues))
+ntree = 100
+for(idx in 1:length(mvalues)){
+  m = mvalues[idx]
+  rf_fit = randomForest(pregnancy_weight_gain ~ ., mtry = m, data = pregnancy_train)
+  oob_errors[idx] = rf_fit$mse[ntree]
+}
+
+# make plot of error vs m
+error_m = tibble(m = mvalues, oob_err = oob_errors) %>%
+  ggplot(aes(x = m, y = oob_err)) + 
+  geom_line() + geom_point() + 
+  scale_x_continuous(breaks = mvalues, guide = guide_axis(check.overlap = TRUE)) +
+  theme_bw()
+
+# observe m minimized at 20 and 104
+
+# save
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-m.png", 
+       plot = error_m, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+
+varImpPlot(rfit)
+```
+
+```{r}
+# boosting
+set.seed(1) # for reproducibility (DO NOT CHANGE)
+# Fit with interaction depth 1
+gbm_fit_1 = gbm(spam ~ .,
+              distribution = "bernoulli",
+              n.trees = 1000,
+              interaction.depth = 1,
+              shrinkage = 0.1,
+              cv.folds = 5,
+              data = spam_train)
+```
