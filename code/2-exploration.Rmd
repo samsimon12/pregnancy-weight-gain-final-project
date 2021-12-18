@@ -76,6 +76,15 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/raincloud-race.
 
 ```{r}
 # scatter plots of weight gain vs age, bmi, poverty/income ratio
+age_scatter = pdiet_data %>% ggplot(aes(x=mother_age, y=pregnancy_weight_gain)) + geom_point() +
+  labs(x="age", y="weight gain during pregnancy") + theme_bw()
+
+bmi_scatter = pdiet_data %>% ggplot(aes(x=prepregnancy_bmi, y=pregnancy_weight_gain)) + geom_point() +
+  labs(x="BMI before pregnancy", y="weight gain during pregnancy") + theme_bw()
+
+povincome_scatter = pdiet_data %>% ggplot(aes(x=poverty_income_ratio, y=pregnancy_weight_gain)) + geom_point() +
+  labs(x="poverty-income ratio", y="weight gain during pregnancy") + theme_bw()
+povincome_scatter
 
 ```
 
