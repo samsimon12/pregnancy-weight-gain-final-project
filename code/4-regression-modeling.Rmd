@@ -49,11 +49,7 @@ save(lm_fit, file = "./../results/lm_fit.Rda")
 ```{r}
 # run ridge regression
 set.seed(5)
-ridge_fit = cv.glmnet( pregnancy_weight_gain ~ DHPalcoholg + DHPbeanpea + DHPbfpklb + DHPcalcium + DHPfat205 +
-                         DHPfat226 + DHPfenergy + DHPfolate + DHPfolequ + DHPfrklch + DHPfruit + DHPiron +
-                         DHPmtpltfs + DHPnatfol + DHPnutsds + DHPorgan + DHPpepfat + DHPpfat + DHPpoultry +
-                         DHPsodium + DHPsoy + DHPsunfol + DHPtfatacid + DHPupfol + DHPveg + DHPvitd +
-                         DHPwgrain + DHPwhpot,
+ridge_fit = cv.glmnet( pregnancy_weight_gain ~ .,
 alpha = 0,
 nfolds = 10,
 data = pdiet_train)
@@ -88,16 +84,16 @@ ggsave(filename = "./../results/ridge-trace-plot.png",
 # evaluate training RMSEs
 
 # evaluate OLSR RMSE
-lm_predictions = predict(lm_fit, newdata = pregnancy_train)
+lm_predictions = predict(lm_fit, newdata = pdiet_train)
 
-lm_RMSE = sqrt(mean((lm_predictions-pregnancy_train$pregnancy_weight_gain)^2))
+lm_RMSE = sqrt(mean((lm_predictions-pdiet_train$pregnancy_weight_gain)^2))
 
 # evaluate ridge RMSE
 ridge_predictions = predict(ridge_fit, 
-                            newdata = pregnancy_train, 
+                            newdata = pdiet_train, 
                             s = "lambda.1se") %>%
   as.numeric()
-ridge_RMSE = sqrt(mean((ridge_predictions-pregnancy_train$pregnancy_weight_gain)^2))
+ridge_RMSE = sqrt(mean((ridge_predictions-pdiet_train$pregnancy_weight_gain)^2))
 
 ```
 
