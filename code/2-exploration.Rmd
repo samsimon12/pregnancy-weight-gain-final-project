@@ -37,7 +37,7 @@ median_weight_gain = pdiet_data %>%
   pull()
 
 # create histogram of weight gain during pregnancy
-p = pdiet_data %>%
+hist = pdiet_data %>%
   ggplot(aes(x = pregnancy_weight_gain)) + 
   geom_histogram() +
   geom_vline(xintercept = median_weight_gain,
@@ -45,7 +45,13 @@ p = pdiet_data %>%
   labs(x = "Weight gain during pregnancy", 
        y = "Number of women") +
   theme_classic()
-p
+
+# save
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/weight-gain-hist.png", 
+       plot = hist, 
+       device = "png", 
+       width = 7, 
+       height = 4)
 
 ```
 
