@@ -15,4 +15,5 @@ source("./../code/3-train-test-split.Rmd")
 source("./../code/4-regression-modeling.Rmd")
 source("./../code/5-tree-modeling.Rmd")
 source("./../code/6-model-evaluation.Rmd")
+knitr::purl(input, output, documentation = 2)
 ```
