@@ -24,12 +24,12 @@ library(raincloudplots)
 library(dplyr)
 library(readr)
 library(stringr)
-source("~/pregnancy-weight-gain-final-project/code/R_rainclouds.R")
+source("./../code/R_rainclouds.R")
 ```
 
 ```{r}
 # load cleaned data
-pdiet_data = read.csv("~/pregnancy-weight-gain-final-project/data/clean/pregnancy_data.csv")
+pdiet_data = read.csv("./../data/clean/pregnancy_data.csv")
 ```
 
 ```{r}
