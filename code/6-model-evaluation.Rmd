@@ -51,7 +51,7 @@ ridge_RMSE = sqrt(mean((ridge_predictions - pdiet_test$pregnancy_weight_gain)^2)
 
 # evaluate random forest RMSE
 rf_predictions = predict(rfit_final, newdata = pdiet_test)
-rf_RMSE = sqrt(mean((test_rf_probabilities - pdiet_test$pregnancy_weight_gain)^2))
+rf_RMSE = sqrt(mean((rf_predictions - pdiet_test$pregnancy_weight_gain)^2))
 
 #make table
 error_for_models = tribble(
@@ -61,7 +61,7 @@ error_for_models = tribble(
   "Ridge", ridge_RMSE,
   "Random Forest", rf_RMSE
   )
-
+error_for_models
 # make nice table
 error_for_models %>% kable(format = "latex", row.names = NA, 
                         booktabs = TRUE,
