@@ -131,11 +131,10 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/raincloud-educa
 # subset only DHP variables
 pdiet_DHP = pdiet_data[,substr(colnames(pdiet_data), 1, 3)=="DHP"]
 
-colnames(pdiet_DHP) = gsub("\\..*", "",colnames(pdiet_DHP))
-
 # calculate correlation and make plot
 corr = cor(pdiet_DHP)
-corrplot(corr, tl.cex = 0.7)
-corrplot(corr, type = "upper", order = "hclust", 
+DHP_corr = corrplot(corr, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45, tl.cex = 0.7)
+
+cairo_ps(file = "~/pregnancy-weight-gain-final-project/results/DHP-corr.png", onefile = FALSE, fallback_resolution = 600)
 ```
