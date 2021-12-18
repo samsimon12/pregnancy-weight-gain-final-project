@@ -18,7 +18,10 @@ source("functions/plot_glmnet.R")   #for ridge trace plot
 ```{r}
 # load in training and test data
 pdiet_test = read.csv("./../data/clean/pdiet_test.csv")
-pdiet_train = read_csv("./../data/clean/pdiet_train.csv", show_col_types = FALSE)
+pdiet_train1 = read_csv("./../data/clean/pdiet_train.csv", show_col_types = FALSE)
+pdiet_train = data.frame(pdiet_train1)
+pdiet_train[sapply(pdiet_train, is.character)] <- lapply(pdiet_train[sapply(pdiet_train, is.character)], 
+                                                         as.factor)
 ```
 
 ```{r}

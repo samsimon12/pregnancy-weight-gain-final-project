@@ -21,7 +21,7 @@ library(kableExtra)
 ```{r}
 # load test data 
 
-pdiet_test = read_csv("./../data/clean/pdiet_test.csv")
+pdiet_test = read_csv("./../data/clean/pdiet_test.csv", show_col_types = FALSE)
 
 ```
 
@@ -29,11 +29,11 @@ pdiet_test = read_csv("./../data/clean/pdiet_test.csv")
 #load linear regression fit
 load("./../results/lm_fit.Rda")
 
-
 # load ridge fit
 load("./../results/ridge_fit.Rda")
 
-
+# load random forest fit
+load("./../results/rf_fit.Rda")
 
 
 ```
@@ -46,15 +46,20 @@ linear_RMSE = sqrt(mean((linear_predictions - pdiet_test$pregnancy_weight_gain)^
 # evaluate ridge regression RMSE
 ridge_predictions = predict(ridge_fit, 
                             newdata = pdiet_test, 
-                            s = "lambda.1se")
+                            s = "lambda.1se") %>% as.numeric()
 ridge_RMSE = sqrt(mean((ridge_predictions - pdiet_test$pregnancy_weight_gain)^2))
+
+# evaluate random forest RMSE
+rf_predictions = predict(rfit_final, newdata = pdiet_test)
+rf_RMSE = sqrt(mean((test_rf_probabilities - pdiet_test$pregnancy_weight_gain)^2))
 
 #make table
 error_for_models = tribble(
   ~Model, ~RMSE, 
   #------/------- 
   "Linear", linear_RMSE,
-  "Ridge", ridge_RMSE
+  "Ridge", ridge_RMSE,
+  "Random Forest", rf_RMSE
   )
 
 # make nice table
@@ -64,10 +69,12 @@ error_for_models %>% kable(format = "latex", row.names = NA,
                         col.names = c("Model type", 
                                       "Root mean squared error"),
                         caption = "These are the root mean squared test 
-                        errors of the linear model, ridge regression,....") %>%
+                        errors of the linear model, ridge regression, and random forest") %>%
   kable_styling(position = "center") %>%
   kable_styling(latex_options = "HOLD_position")
 
+tibble(Method = c("OLSR", "Ridge", "Random Forest"), `Test RMSE` = c(linear_RMSE, ridge_RMSE, rf_RMSE)) %>%
+  write_tsv("./../results/model-evaluation.tsv")
 
 ```
 

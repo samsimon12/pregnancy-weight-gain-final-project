@@ -133,15 +133,8 @@ pdiet_DHP = pdiet_data[,substr(colnames(pdiet_data), 1, 3)=="DHP"]
 
 # calculate correlation and make plot
 corr = cor(pdiet_DHP)
-DHP_corr = corrplot(corr, type = "upper", order = "hclust", 
-         tl.col = "black", tl.srt = 45, tl.cex = 0.7)
 
 png(height=1800, width=1800, file="~/pregnancy-weight-gain-final-project/results/DHP-correlation.png", type = "cairo")
-corrplot(corr, type = "upper", order = "hclust", 
-         tl.col = "black", tl.srt = 45, tl.cex = 0.7)
-dev.off()
-
-cairo_ps(file = "~/pregnancy-weight-gain-final-project/results/DHP-correlation.png", onefile = FALSE, fallback_resolution = 600)
 corrplot(corr, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45, tl.cex = 0.7)
 dev.off()
