@@ -14,17 +14,9 @@ library(ggrepel)    # for scatter plot point labels
 library(kableExtra) # for printing tables
 library(cowplot)    # for side by side plots
 library(corrplot) # correlation plots
-# raincloud plots
-if (!require(remotes)) {
-  install.packages("remotes")
-}
-remotes::install_github('jorvlan/raincloudplots')
-
-library(raincloudplots)
 library(dplyr)
 library(readr)
 library(stringr)
-source("functions/R_rainclouds.R")
 ```
 
 ```{r}
@@ -61,13 +53,13 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/weight-gain-his
 ```{r}
 # scatter plots of weight gain vs age, bmi, poverty/income ratio
 age_scatter = pdiet_data %>% ggplot(aes(x=mother_age, y=pregnancy_weight_gain)) + geom_point() +
-  labs(x="age", y="weight gain during pregnancy") + theme_bw()
+  labs(x="age", y="pregnancy weight gain") + theme_bw()
 
 bmi_scatter = pdiet_data %>% ggplot(aes(x=prepregnancy_bmi, y=pregnancy_weight_gain)) + geom_point() +
-  labs(x="BMI before pregnancy", y="weight gain during pregnancy") + theme_bw()
+  labs(x="BMI before pregnancy", y="pregnancy weight gain") + theme_bw()
 
 povincome_scatter = pdiet_data %>% ggplot(aes(x=poverty_income_ratio, y=pregnancy_weight_gain)) + geom_point() +
-  labs(x="poverty-income ratio", y="weight gain during pregnancy") + theme_bw()
+  labs(x="poverty-income ratio", y="pregnancy weight gain") + theme_bw()
 
 # save
 ggsave(filename = "~/pregnancy-weight-gain-final-project/results/age-scatter.png", 
@@ -84,6 +76,14 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/bmi-scatter.png
 
 ggsave(filename = "~/pregnancy-weight-gain-final-project/results/povincome-scatter.png", 
        plot = povincome_scatter, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+scatters = plot_grid(age_scatter, bmi_scatter, povincome_scatter)
+
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/scatters.png", 
+       plot = scatters, 
        device = "png", 
        width = 7, 
        height = 4)
@@ -110,6 +110,6 @@ flattenCorrMatrix <- function(cormat) {
     cor  =(cormat)[ut]
     )
 }
-flattenCorrMatrix(corr)
-flattenCorrMatrix(corr) %>% slice_max(cor, n=10)
+# top 10 correlated DHP variables
+top10 = flattenCorrMatrix(corr) %>% slice_max(cor, n=10)
 ```
