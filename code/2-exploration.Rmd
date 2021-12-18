@@ -57,12 +57,12 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/weight-gain-his
 
 ```{r}
 # raincloud of weight gain vs race
-raincloudRacePlot <- ggplot(x, aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, fill = mother_race_ethnicity)) +
+raincloudRacePlot <- ggplot(pdiet_data, aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, fill = mother_race_ethnicity)) +
   geom_flat_violin(aes(fill = mother_race_ethnicity),position = position_nudge(x = .2, y = 0), adjust = 1.5, trim = FALSE, alpha = .5, colour = NA)+
   geom_point(aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, color = mother_race_ethnicity),position = position_jitter(width = .15, height = 0), size = 1, shape = 20)+
   geom_boxplot(aes(x = mother_race_ethnicity, y = pregnancy_weight_gain, fill = mother_race_ethnicity),outlier.shape = NA, alpha = .5, width = .1, colour = "black")+
   scale_colour_brewer(palette = "Set1")+
-  scale_fill_brewer(palette = "Set1")+ theme_classic() + labs(x = "race/ethnicity", y = "weight gain") + 
+  scale_fill_brewer(palette = "Set1")+ theme_classic() + labs(x = "race/ethnicity", y = "weight gain during pregnancy") + 
   guides(x = guide_axis(n.dodge = 2))
 raincloudRacePlot = raincloudRacePlot + labs(fill="race/ethnicity")
 
@@ -72,4 +72,28 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/raincloud-race.
        device = "png", 
        width = 7, 
        height = 4)
+```
+
+```{r}
+# scatter plots of weight gain vs age, bmi, poverty/income ratio
+
+```
+
+```{r, warning=FALSE}
+# raincloud plot of weight gain vs education
+raincloudEduPlot <- ggplot(pdiet_data, aes(x = mother_education, y = pregnancy_weight_gain, fill = mother_education)) +
+  geom_flat_violin(aes(fill = mother_education),position = position_nudge(x = .2, y = 0), adjust = 1.5, trim = FALSE, alpha = .5, colour = NA)+
+  geom_point(aes(x = mother_education, y = pregnancy_weight_gain, color = mother_education),position = position_jitter(width = .15, height = 0), size = 1, shape = 20)+
+  geom_boxplot(aes(x = mother_education, y = pregnancy_weight_gain, fill = mother_education),outlier.shape = NA, alpha = .5, width = .1, colour = "black")+
+  scale_colour_brewer(palette = "Set1")+
+  scale_fill_brewer(palette = "Set1")+ theme_classic() + labs(x = "education level", y = "weight gain during pregnancy") +
+  guides(x = guide_axis(angle = 90))
+
+# save
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/raincloud-education.png", 
+       plot = raincloudEduPlot, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
 ```
