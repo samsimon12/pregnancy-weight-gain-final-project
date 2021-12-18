@@ -13,6 +13,7 @@ library(tidyverse)  # tidyverse
 library(ggrepel)    # for scatter plot point labels
 library(kableExtra) # for printing tables
 library(cowplot)    # for side by side plots
+library(corrplot) # correlation plots
 # raincloud plots
 if (!require(remotes)) {
   install.packages("remotes")
@@ -22,6 +23,7 @@ remotes::install_github('jorvlan/raincloudplots')
 library(raincloudplots)
 library(dplyr)
 library(readr)
+library(stringr)
 source("~/pregnancy-weight-gain-final-project/code/R_rainclouds.R")
 ```
 
@@ -84,8 +86,25 @@ bmi_scatter = pdiet_data %>% ggplot(aes(x=prepregnancy_bmi, y=pregnancy_weight_g
 
 povincome_scatter = pdiet_data %>% ggplot(aes(x=poverty_income_ratio, y=pregnancy_weight_gain)) + geom_point() +
   labs(x="poverty-income ratio", y="weight gain during pregnancy") + theme_bw()
-povincome_scatter
 
+# save
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/age-scatter.png", 
+       plot = age_scatter, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/bmi-scatter.png", 
+       plot = bmi_scatter, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+ggsave(filename = "~/pregnancy-weight-gain-final-project/results/povincome-scatter.png", 
+       plot = povincome_scatter, 
+       device = "png", 
+       width = 7, 
+       height = 4)
 ```
 
 ```{r, warning=FALSE}
@@ -105,4 +124,18 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/raincloud-educa
        width = 7, 
        height = 4)
 
+```
+
+```{r}
+# correlation matrices for DHP variables
+# subset only DHP variables
+pdiet_DHP = pdiet_data[,substr(colnames(pdiet_data), 1, 3)=="DHP"]
+
+colnames(pdiet_DHP) = gsub("\\..*", "",colnames(pdiet_DHP))
+
+# calculate correlation and make plot
+corr = cor(pdiet_DHP)
+corrplot(corr, tl.cex = 0.7)
+corrplot(corr, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45, tl.cex = 0.7)
 ```
