@@ -30,6 +30,7 @@ source("functions/R_rainclouds.R")
 ```{r}
 # load cleaned data
 pdiet_data = read.csv("./../data/clean/pregnancy_data.csv")
+pdiet_data_raw = read.csv("./../data/raw/pregnancy_diet.csv")
 ```
 
 ```{r}
@@ -138,4 +139,15 @@ png(height=1800, width=1800, file="~/pregnancy-weight-gain-final-project/results
 corrplot(corr, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45, tl.cex = 0.7)
 dev.off()
+
+flattenCorrMatrix <- function(cormat) {
+  ut <- upper.tri(cormat)
+  data.frame(
+    row = rownames(cormat)[row(cormat)[ut]],
+    column = rownames(cormat)[col(cormat)[ut]],
+    cor  =(cormat)[ut]
+    )
+}
+flattenCorrMatrix(corr)
+flattenCorrMatrix(corr) %>% slice_max(cor, n=10)
 ```

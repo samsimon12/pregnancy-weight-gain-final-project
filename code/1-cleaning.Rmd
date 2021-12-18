@@ -5,8 +5,6 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(plyr)
-library(dplyr)
 ```
 We'll need to use the following `R` packages:
 ```{r, message = FALSE}
@@ -14,12 +12,29 @@ library(tidyverse)  # tidyverse
 library(ggrepel)    # for scatter plot point labels
 library(kableExtra) # for printing tables
 library(cowplot)    # for side by side plots
+library(plyr)
+library(dplyr)
 ```
 
 
 ## Data Wrangling
 ```{r}
+# load raw data
 pdiet_raw = read.csv("~/pregnancy-weight-gain-final-project/data/raw/pregnancy_diet.csv")
+```
+
+```{r}
+# filter to have weight gain of at least 0
+pdiet1 = pdiet_raw %>% filter(N9..Weight.gain.during.pregnancy.in.pounds>=0)
+# change weight gain to be numeric and filter out non-numeric variables
+pdiet1$N9..Weight.gain.during.pregnancy.in.pounds = as.numeric(pdiet1$N9..Weight.gain.during.pregnancy.in.pounds)
+pdiet2 = pdiet1 %>% select_if(is.numeric)
+pdiet3 = pdiet2 %>% select(-c("DHPWksbirth..Weeks.until.the.birth.when.DHP.was.completed"))
+pdiet4 = pdiet3 %>% mutate(pregnancy_weight_gain = N9..Weight.gain.during.pregnancy.in.pounds) %>%
+mutate(mother_age = cleaned_age..Adjusted.Age) %>% mutate(poverty_income_ratio = PIRLEVEL..Income....of.poverty.) %>% mutate(prepregnancy_bmi = BMI..Pre.pregnancy.BMI) %>% select(-c("N9..Weight.gain.during.pregnancy.in.pounds", "cleaned_age..Adjusted.Age", "PIRLEVEL..Income....of.poverty.", "BMI..Pre.pregnancy.BMI"))
+
+# clean up col names for DHP variables
+colnames(pdiet4) = gsub("\\..*", "",colnames(pdiet4))
 ```
 
 ```{r}
