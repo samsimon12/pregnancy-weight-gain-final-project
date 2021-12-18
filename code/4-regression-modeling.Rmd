@@ -33,8 +33,8 @@ lm_fit = lm(formula = pregnancy_weight_gain ~ DHPalcoholg + DHPbeanpea + DHPbfpk
 # print summary
 summary(lm_fit)
 
-
-
+#save linear regression fit 
+save(lm_fit, file = "./../results/lm_fit.Rda")
 ```
 
 
@@ -55,7 +55,6 @@ data = pdiet_train)
 save(ridge_fit, file = "./../results/ridge_fit.Rda")
 
 # plot ridge fit (CV plot)
-
 plot(ridge_fit)
 
 # save ridge CV plot
@@ -76,7 +75,22 @@ ggsave(filename = "./../results/ridge-trace-plot.png",
        device = "png", 
        width = 6, 
        height = 4)
+```
 
+```{r}
+# evaluate training RMSEs
+
+# evaluate OLSR RMSE
+lm_predictions = predict(lm_fit, newdata = pregnancy_train)
+
+lm_RMSE = sqrt(mean((lm_predictions-pregnancy_train$pregnancy_weight_gain)^2))
+
+# evaluate ridge RMSE
+ridge_predictions = predict(ridge_fit, 
+                            newdata = pregnancy_train, 
+                            s = "lambda.1se") %>%
+  as.numeric()
+ridge_RMSE = sqrt(mean((ridge_predictions-pregnancy_train$pregnancy_weight_gain)^2))
 
 ```
 

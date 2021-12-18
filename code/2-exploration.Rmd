@@ -24,7 +24,7 @@ library(raincloudplots)
 library(dplyr)
 library(readr)
 library(stringr)
-source("./../code/R_rainclouds.R")
+source("functions/R_rainclouds.R")
 ```
 
 ```{r}

@@ -70,6 +70,9 @@ set.seed(5) # for reproducibility (DO NOT CHANGE)
 
 rfit_final = randomForest(pregnancy_weight_gain ~ ., mtry = 20, ntree = 100, importance = TRUE, data = pregnancy_train)
 
+#save random forest fit
+save(rfit_final, file = "./../results/rf_fit.Rda")
+
 # variable importance plots
 png(file='~/pregnancy-weight-gain-final-project/results/var-imp.png')
 varImpPlot(rfit_final, n.var = 15)
@@ -77,10 +80,7 @@ dev.off()
 
 ```
 ```{r}
-# calculate train rmse and test rmses
-test_rf_probabilities = predict(rfit_final, newdata = pregnancy_test)
-test_RMSE_rf = sqrt(mean((test_rf_probabilities - pregnancy_test$pregnancy_weight_gain)^2))
-
+# calculate train rmse
 train_rf_probabilities = predict(rfit_final, newdata = pregnancy_train)
 train_RMSE_rf = sqrt(mean((train_rf_probabilities - pregnancy_train$pregnancy_weight_gain)^2))
 ```

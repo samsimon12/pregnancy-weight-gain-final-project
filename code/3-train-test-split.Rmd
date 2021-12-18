@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 # load cleaned data
-pdiet_data = read.csv("~/pregnancy-weight-gain-final-project/data/clean/pregnancy_data.csv")
+pdiet_data = read.csv("./../data/clean/pregnancy_data.csv")
 
 # split into train and test
 set.seed(5) # seed set for reproducibility (DO NOT CHANGE)
@@ -20,6 +20,6 @@ pdiet_train = pdiet_data[train_samples,]
 pdiet_test = pdiet_data[-train_samples,]
 
 # save the train and test data
-write_csv(x = pdiet_train, file = "~/pregnancy-weight-gain-final-project/data/clean/pdiet_train.csv")
-write_csv(x = pdiet_test, file = "~/pregnancy-weight-gain-final-project/data/clean/pdiet_test.csv")
+write_csv(x = pdiet_train, file = "./../data/clean/pdiet_train.csv")
+write_csv(x = pdiet_test, file = "./../data/clean/pdiet_test.csv")
 ```
