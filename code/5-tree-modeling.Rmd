@@ -28,17 +28,10 @@ set.seed(5) # for reproducibility (DO NOT CHANGE)
 rf_fit = randomForest(pregnancy_weight_gain ~ ., data = pregnancy_train)
 error_B = plot(rf_fit)
 
-
-png(file='~/pregnancy-weight-gain-final-project/results/error-versus-B.png')
+# save
+png(file='~/pregnancy-weight-gain-final-project/results/error-B.png')
 plot(rf_fit)
 dev.off() 
-
-# save
-ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-B.png", 
-       plot = error_B, 
-       device = "png", 
-       width = 7, 
-       height = 4)
 
 # OOB error stabilizes at approx 100 trees based on plot
 # default mtry value: p/3, or 153/3, which is 51
@@ -60,7 +53,7 @@ error_m = tibble(m = mvalues, oob_err = oob_errors) %>%
   scale_x_continuous(breaks = mvalues, guide = guide_axis(check.overlap = TRUE)) +
   theme_bw()
 
-# observe m minimized at 20 and 104
+# observe m minimized at 20
 
 # save
 ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-m.png", 
@@ -68,6 +61,8 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-m.
        device = "png", 
        width = 7, 
        height = 4)
+
+# variable importance plots
 
 
 varImpPlot(rfit)
