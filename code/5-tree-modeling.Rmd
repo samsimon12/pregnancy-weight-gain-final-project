@@ -29,17 +29,17 @@ pregnancy_test = read.csv("./../data/clean/pdiet_test.csv")
 set.seed(5) # for reproducibility (DO NOT CHANGE)
 rf_fit = randomForest(pregnancy_weight_gain ~ ., data = pregnancy_train)
 error_B = plot(rf_fit)
-
+plot(rf_fit)
 # save
 png(file='~/pregnancy-weight-gain-final-project/results/error-B.png')
 plot(rf_fit)
 dev.off() 
 
 # OOB error stabilizes at approx 100 trees based on plot
-# default mtry value: p/3, or 153/3, which is 51
+# default mtry value: p/3, or 31/3, which is 11
 
 # tune for optimal value of m
-mvalues = seq(1,153)
+mvalues = seq(1,31)
 oob_errors = numeric(length(mvalues))
 ntree = 100
 for(idx in 1:length(mvalues)){
@@ -55,7 +55,7 @@ error_m = tibble(m = mvalues, oob_err = oob_errors) %>%
   scale_x_continuous(breaks = mvalues, guide = guide_axis(check.overlap = TRUE)) +
   theme_bw()
 
-# observe m minimized at 20
+# observe m minimized at 28
 
 # save
 ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-m.png", 
@@ -64,11 +64,12 @@ ggsave(filename = "~/pregnancy-weight-gain-final-project/results/error-versus-m.
        width = 7, 
        height = 4)
 ```
+
 ```{r}
 # fit model with optimal m and B
 set.seed(5) # for reproducibility (DO NOT CHANGE)
 
-rfit_final = randomForest(pregnancy_weight_gain ~ ., mtry = 20, ntree = 100, importance = TRUE, data = pregnancy_train)
+rfit_final = randomForest(pregnancy_weight_gain ~ ., mtry = 28, ntree = 100, importance = TRUE, data = pregnancy_train)
 
 #save random forest fit
 save(rfit_final, file = "./../results/rf_fit.Rda")
