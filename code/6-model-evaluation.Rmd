@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(glmnetUtils)
 library(tidyverse)
 library(kableExtra)
+library(readr)
 ```
 
 ```{r}

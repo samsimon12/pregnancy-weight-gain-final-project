@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 #load libraries
 library(glmnetUtils)  #for ridge regression
+library(readr)
 source("functions/plot_glmnet.R")   #for ridge trace plot
 
 ```
